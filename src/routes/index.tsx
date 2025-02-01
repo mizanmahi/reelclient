@@ -12,6 +12,7 @@ const Routers = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
          </Route>
+         <Route path='*' element={<h1>404 Not Found</h1>} />
       </Routes>
    );
 };

@@ -1,5 +1,11 @@
+import Container from '@/components/Shared/Container';
+
 const Home = () => {
-   return <div className='text-red-600 scroll-mt-56'>Home Page</div>;
+   return (
+      <Container>
+         <div>Home</div>
+      </Container>
+   );
 };
 
 export default Home;
