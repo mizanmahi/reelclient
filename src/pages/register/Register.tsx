@@ -13,7 +13,9 @@ import {
    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import { register } from '@/apis/user';
+import { toast } from 'sonner';
 
 // Define the registration schema
 const registerSchema = z.object({
@@ -26,7 +28,9 @@ const registerSchema = z.object({
 
    password: z
       .string()
-      .min(6, { message: 'Password must be at least 6 characters long.' })
+      .min(8, {
+         message: 'Password must be at least 8 characters long.',
+      })
       .max(100, { message: 'Password must be at most 100 characters long.' }),
 
    contact: z
@@ -47,9 +51,24 @@ const Register: React.FC = () => {
       },
    });
 
-   function onSubmit(values: z.infer<typeof registerSchema>) {
+   const navigate = useNavigate();
+
+   async function onSubmit(values: z.infer<typeof registerSchema>) {
       // Handle form submission
       console.log(values);
+
+      try {
+         const res = await register(values);
+
+         if (res.success) {
+            toast.success(res.message);
+            navigate('/login');
+         } else {
+            toast.error(res.message);
+         }
+      } catch (err: any) {
+         console.error(err);
+      }
    }
 
    return (
@@ -127,7 +146,8 @@ const Register: React.FC = () => {
                               />
                            </FormControl>
                            <FormDescription>
-                              Your password must be at least 6 characters long.
+                              Your password must be at least 8 characters long
+                              with at least a letter.
                            </FormDescription>
                            <FormMessage />
                         </FormItem>
