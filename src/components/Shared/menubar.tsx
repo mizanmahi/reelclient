@@ -11,6 +11,9 @@ import {
    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUser } from '@/hooks/useUser';
+import { logout } from '@/apis/user';
+import { toast } from 'sonner';
 
 const navLinks = [
    { path: '/', label: 'Home' },
@@ -19,8 +22,17 @@ const navLinks = [
    { path: '/contact', label: 'Contact' },
 ];
 
-const Navbar: React.FC = () => {
-   const loggedIn = true;
+const Menubar: React.FC = () => {
+   const { user, isLoading, setUser } = useUser();
+   console.log({ user, isLoading });
+
+   const loggedIn = user?.email;
+
+   const logOut = () => {
+      logout();
+      setUser(null);
+      toast.info('Logged out');
+   };
 
    return (
       <nav className='flex items-center justify-between p-4 bg-gray-50 shadow-sm'>
@@ -54,7 +66,9 @@ const Navbar: React.FC = () => {
                      <DropdownMenuSeparator />
                      <DropdownMenuItem>Profile</DropdownMenuItem>
                      <DropdownMenuItem>Update Account</DropdownMenuItem>
-                     <DropdownMenuItem>Logout</DropdownMenuItem>
+                     <DropdownMenuItem onClick={logOut}>
+                        Logout
+                     </DropdownMenuItem>
                   </DropdownMenuContent>
                </DropdownMenu>
             ) : (
@@ -74,4 +88,4 @@ const Navbar: React.FC = () => {
    );
 };
 
-export default Navbar;
+export default Menubar;

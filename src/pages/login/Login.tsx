@@ -16,6 +16,10 @@ import { Input } from '@/components/ui/input';
 import { NavLink, useLocation, useNavigate } from 'react-router';
 import { login } from '@/apis/user';
 import { toast } from 'sonner';
+import Spinner from '@/components/Shared/Spinner';
+import { jwtDecode } from 'jwt-decode';
+import { useUser } from '@/hooks/useUser';
+import { IUser } from '@/types/user';
 
 // Define the login schema
 const loginSchema = z.object({
@@ -24,23 +28,6 @@ const loginSchema = z.object({
       .string()
       .min(6, { message: 'Password must be at least 6 characters long.' }),
 });
-
-const Spinner = () => (
-   <svg
-      className='animate-spin h-5 w-5 text-white'
-      xmlns='http://www.w3.org/2000/svg'
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-   >
-      <circle className='opacity-25' cx='12' cy='12' r='10' strokeWidth='4' />
-      <path
-         className='opacity-75'
-         fill='currentColor'
-         d='M4 12a8 8 0 018-8v8H4z'
-      />
-   </svg>
-);
 
 const Login: React.FC = () => {
    const form = useForm<z.infer<typeof loginSchema>>({
@@ -58,11 +45,16 @@ const Login: React.FC = () => {
    const navigate = useNavigate();
    const location = useLocation();
 
+   const { setUser } = useUser();
+
    async function onSubmit(values: z.infer<typeof loginSchema>) {
       try {
          const res = await login(values);
          if (res?.success) {
             toast.success(res.message);
+            const userData = jwtDecode(res.data.token);
+            setUser(userData as IUser);
+
             navigate(location.state?.from?.pathname || '/', { replace: true });
          }
       } catch (err: any) {
@@ -139,7 +131,6 @@ const Login: React.FC = () => {
                   />
 
                   {/* Submit Button */}
-                  {/* <Button type='submit'>Login</Button> */}
 
                   <Button
                      type='submit'
@@ -148,10 +139,10 @@ const Login: React.FC = () => {
                      {isSubmitting ? (
                         <>
                            <Spinner /> {/* Show spinner */}
-                           Registering...
+                           Logging...
                         </>
                      ) : (
-                        'Register'
+                        'Login'
                      )}
                   </Button>
 

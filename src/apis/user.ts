@@ -31,7 +31,7 @@ export const login = async (userData: FieldValues) => {
    const result = await apiRequest('post', '/auth/login', userData);
 
    if (result.success) {
-      localStorage.setItem('accessToken', result.data.accessToken);
+      localStorage.setItem('accessToken', result.data.token);
    }
 
    return result;

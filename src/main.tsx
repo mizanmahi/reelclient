@@ -4,12 +4,15 @@ import { BrowserRouter } from 'react-router';
 import './index.css';
 import Routers from './routes/index.tsx';
 import { Toaster } from '@/components/ui/sonner';
+import UserProvider from './providers/userProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
    <StrictMode>
-      <BrowserRouter>
-         <Toaster />
-         <Routers />
-      </BrowserRouter>
+      <UserProvider>
+         <BrowserRouter>
+            <Toaster />
+            <Routers />
+         </BrowserRouter>
+      </UserProvider>
    </StrictMode>
 );

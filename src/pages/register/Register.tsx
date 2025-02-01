@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { NavLink, useNavigate } from 'react-router';
 import { register } from '@/apis/user';
 import { toast } from 'sonner';
+import Spinner from '@/components/Shared/Spinner';
 
 // Define the registration schema
 const registerSchema = z.object({
@@ -50,6 +51,10 @@ const Register: React.FC = () => {
          contact: '',
       },
    });
+
+   const {
+      formState: { isSubmitting },
+   } = form;
 
    const navigate = useNavigate();
 
@@ -176,7 +181,21 @@ const Register: React.FC = () => {
                   />
 
                   {/* Submit Button */}
-                  <Button type='submit'>Register</Button>
+                  {/* <Button type='submit'>Register</Button> */}
+
+                  <Button
+                     type='submit'
+                     className='mt-5 w-full flex items-center justify-center'
+                  >
+                     {isSubmitting ? (
+                        <>
+                           <Spinner /> {/* Show spinner */}
+                           Registering...
+                        </>
+                     ) : (
+                        'Register'
+                     )}
+                  </Button>
 
                   <p className='text-sm text-center my-3'>
                      Already have an account?
