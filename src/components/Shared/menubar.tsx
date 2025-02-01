@@ -2,10 +2,28 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { NavLink } from 'react-router';
 import Logo from './Logo';
+import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuLabel,
+   DropdownMenuSeparator,
+   DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
+const navLinks = [
+   { path: '/', label: 'Home' },
+   { path: '/about', label: 'About' },
+   { path: '/services', label: 'Services' },
+   { path: '/contact', label: 'Contact' },
+];
 
 const Navbar: React.FC = () => {
+   const loggedIn = true;
+
    return (
-      <nav className='flex items-center justify-between p-4 bg-white shadow-sm'>
+      <nav className='flex items-center justify-between p-4 bg-gray-50 shadow-sm'>
          <div className='flex items-center'>
             <NavLink to='/'>
                <Logo />
@@ -13,42 +31,44 @@ const Navbar: React.FC = () => {
          </div>
 
          <div className='flex items-center space-x-6'>
-            <NavLink
-               to='/'
-               className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
-            >
-               Home
-            </NavLink>
-            <NavLink
-               to='/about'
-               className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
-            >
-               About
-            </NavLink>
-            <NavLink
-               to='/services'
-               className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
-            >
-               Services
-            </NavLink>
-            <NavLink
-               to='/contact'
-               className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
-            >
-               Contact
-            </NavLink>
+            {navLinks.map((navLink) => (
+               <NavLink
+                  to={navLink.path}
+                  className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
+               >
+                  {navLink.label}
+               </NavLink>
+            ))}
 
             {/* Login Button */}
-            <Button
-               asChild
-               variant='default'
-               className={cn(
-                  'bg-blue-600 hover:bg-blue-700 text-white',
-                  'px-4 py-2 rounded-md text-sm font-medium'
-               )}
-            >
-               <NavLink to='/login'>Login</NavLink>
-            </Button>
+            {loggedIn ? (
+               <DropdownMenu>
+                  <DropdownMenuTrigger>
+                     <Avatar>
+                        <AvatarImage src='https://github.com/shadcn.png' />
+                        <AvatarFallback>CN</AvatarFallback>
+                     </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuItem>Profile</DropdownMenuItem>
+                     <DropdownMenuItem>Update Account</DropdownMenuItem>
+                     <DropdownMenuItem>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+               </DropdownMenu>
+            ) : (
+               <Button
+                  asChild
+                  variant='default'
+                  className={cn(
+                     ' text-white',
+                     'px-4 py-2 rounded-md text-sm font-medium'
+                  )}
+               >
+                  <NavLink to='/login'>Login</NavLink>
+               </Button>
+            )}
          </div>
       </nav>
    );
