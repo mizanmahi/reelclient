@@ -13,6 +13,7 @@ import {
    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { NavLink } from 'react-router';
 
 // Define the registration schema
 const registerSchema = z.object({
@@ -55,95 +56,120 @@ const Register: React.FC = () => {
       <div className='flex h-[calc(100vh-4.5rem)]'>
          {/* Left Side Image */}
          <div
-            className='flex-1 bg-cover bg-center'
+            className='hidden lg:flex flex-1 bg-cover bg-center'
             style={{
                backgroundImage:
                   'url(https://i.ibb.co/Qv08jKK7/william-bayreuther-Uql-Wfd-Di-EIM-unsplash.jpg)',
             }}
          ></div>
 
-         <Form {...form}>
-            <form
-               onSubmit={form.handleSubmit(onSubmit)}
-               className='flex-1 flex flex-col justify-center p-8 space-y-8 bg-white'
-            >
-               <FormField
-                  control={form.control}
-                  name='name'
-                  render={({ field }) => (
-                     <FormItem>
-                        <FormLabel>User Name</FormLabel>
-                        <FormControl>
-                           <Input placeholder='User Name' {...field} />
-                        </FormControl>
-                        <FormDescription>
-                           This is your public display name.
-                        </FormDescription>
-                        <FormMessage />
-                     </FormItem>
-                  )}
-               />
+         {/* Form Section */}
+         <div className='flex-1 flex items-center justify-center p-8 bg-white'>
+            <Form {...form}>
+               <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className='flex flex-col lg:space-y-6 space-y-4 w-full max-w-md'
+               >
+                  <div className='text-center mb-6'>
+                     <h1 className='text-3xl font-bold text-gray-800'>
+                        Welcome to ReelShare!
+                     </h1>
+                     <p className='mt-2 text-gray-600'>
+                        Please fill in the details below to create your account.
+                     </p>
+                  </div>
+                  <FormField
+                     control={form.control}
+                     name='name'
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>User Name</FormLabel>
+                           <FormControl>
+                              <Input placeholder='User Name' {...field} />
+                           </FormControl>
+                           <FormDescription>
+                              This is your public display name.
+                           </FormDescription>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
 
-               <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                     <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                           <Input type='email' placeholder='Email' {...field} />
-                        </FormControl>
-                        <FormMessage />
-                     </FormItem>
-                  )}
-               />
+                  <FormField
+                     control={form.control}
+                     name='email'
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>Email</FormLabel>
+                           <FormControl>
+                              <Input
+                                 type='email'
+                                 placeholder='Email'
+                                 {...field}
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
 
-               <FormField
-                  control={form.control}
-                  name='password'
-                  render={({ field }) => (
-                     <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                           <Input
-                              type='password'
-                              placeholder='Password'
-                              {...field}
-                           />
-                        </FormControl>
-                        <FormDescription>
-                           Your password must be at least 6 characters long.
-                        </FormDescription>
-                        <FormMessage />
-                     </FormItem>
-                  )}
-               />
+                  <FormField
+                     control={form.control}
+                     name='password'
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>Password</FormLabel>
+                           <FormControl>
+                              <Input
+                                 type='password'
+                                 placeholder='Password'
+                                 {...field}
+                              />
+                           </FormControl>
+                           <FormDescription>
+                              Your password must be at least 6 characters long.
+                           </FormDescription>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
 
-               <FormField
-                  control={form.control}
-                  name='contact'
-                  render={({ field }) => (
-                     <FormItem>
-                        <FormLabel>Contact Number</FormLabel>
-                        <FormControl>
-                           <Input
-                              type='tel'
-                              placeholder='Contact Number'
-                              {...field}
-                           />
-                        </FormControl>
-                        <FormDescription>
-                           Enter your contact number (digits only).
-                        </FormDescription>
-                        <FormMessage />
-                     </FormItem>
-                  )}
-               />
+                  <FormField
+                     control={form.control}
+                     name='contact'
+                     render={({ field }) => (
+                        <FormItem>
+                           <FormLabel>Contact Number</FormLabel>
+                           <FormControl>
+                              <Input
+                                 type='tel'
+                                 placeholder='Contact Number'
+                                 {...field}
+                              />
+                           </FormControl>
+                           <FormDescription>
+                              Enter your contact number (digits only).
+                           </FormDescription>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
 
-               {/* Submit Button */}
-               <Button type='submit'>Register</Button>
-            </form>
-         </Form>
+                  {/* Submit Button */}
+                  <Button type='submit'>Register</Button>
+
+                  <p className='text-sm text-center my-3'>
+                     Already have an account?
+                     <NavLink
+                        to='/login'
+                        className='text-primary ml-1 underline'
+                     >
+                        Login
+                     </NavLink>
+                  </p>
+               </form>
+            </Form>
+         </div>
       </div>
    );
 };
