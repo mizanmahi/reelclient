@@ -1,8 +1,7 @@
 import { Button } from '@/components/ui/button';
-
 import { cn } from '@/lib/utils';
 import { NavLink } from 'react-router';
-import Logo from './logo';
+import Logo from './Logo';
 
 const Navbar: React.FC = () => {
    return (
