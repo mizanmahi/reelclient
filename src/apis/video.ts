@@ -8,14 +8,24 @@ const BASE_API_URL = import.meta.env.VITE_API_URL;
 const authenticatedRequest = async (
    method: 'get' | 'post',
    url: string,
-   data?: any
+   data?: any,
+   params?: Record<string, any>
 ) => {
    const accessToken = getAccessToken();
+
+   let fullUrl = `${BASE_API_URL}${url}`;
+
+   if (params) {
+      const queryString = new URLSearchParams(params).toString();
+      if (queryString) {
+         fullUrl += `?${queryString}`;
+      }
+   }
 
    try {
       const config = {
          method,
-         url: `${BASE_API_URL}${url}`,
+         url: fullUrl,
          headers: {
             Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
@@ -51,17 +61,32 @@ export const uploadVideo = async (data: FormData) => {
 
 // Get all videos
 export const getAllVideos = async (page: number = 1, limit: number = 10) => {
-   return await authenticatedRequest('get', '/video', {
-      params: { page, limit },
-   });
+   try {
+      const accessToken = getAccessToken();
+      const url = `${BASE_API_URL}/video?page=${page}&limit=${limit}`;
+
+      const res = await axios.get(url, {
+         headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+         },
+      });
+
+      return res.data;
+   } catch (error: any) {
+      throw new Error(
+         error.response?.data?.message ||
+            `Failed to fetch videos: ${error.message}`
+      );
+   }
 };
 
 // Get single video by ID
 export const getVideoById = async (videoId: string) => {
-   return await authenticatedRequest('get', `/video/upload/${videoId}`);
+   return await authenticatedRequest('get', `/video/${videoId}`);
 };
 
 // Handle like/unlike
 export const likeUnlike = async (videoId: string) => {
-   return await authenticatedRequest('post', `/video/upload/${videoId}`);
+   return await authenticatedRequest('post', `/video/${videoId}`);
 };

@@ -35,56 +35,62 @@ const Menubar: React.FC = () => {
    };
 
    return (
-      <nav className='flex items-center justify-between p-4 bg-gray-50 shadow-sm'>
-         <div className='flex items-center'>
-            <NavLink to='/'>
-               <Logo />
-            </NavLink>
-         </div>
+      <div className='bg-gray-50 shadow-sm'>
+         <div className='max-w-7xl mx-auto'>
+            <nav className='flex items-center justify-between p-4 bg-gray-50 shadow-sm'>
+               <div className='flex items-center'>
+                  <NavLink to='/'>
+                     <Logo />
+                  </NavLink>
+               </div>
 
-         <div className='flex items-center space-x-6'>
-            {navLinks.map((navLink) => (
-               <NavLink
-                  to={navLink.path}
-                  className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
-               >
-                  {navLink.label}
-               </NavLink>
-            ))}
+               <div className='flex items-center space-x-6'>
+                  {navLinks.map((navLink) => (
+                     <NavLink
+                        to={navLink.path}
+                        className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
+                     >
+                        {navLink.label}
+                     </NavLink>
+                  ))}
 
-            {/* Login Button */}
-            {loggedIn ? (
-               <DropdownMenu>
-                  <DropdownMenuTrigger>
-                     <Avatar>
-                        <AvatarImage src='https://github.com/shadcn.png' />
-                        <AvatarFallback>CN</AvatarFallback>
-                     </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                     <DropdownMenuSeparator />
-                     <DropdownMenuItem>Profile</DropdownMenuItem>
-                     <DropdownMenuItem>Update Account</DropdownMenuItem>
-                     <DropdownMenuItem onClick={logOut}>
-                        Logout
-                     </DropdownMenuItem>
-                  </DropdownMenuContent>
-               </DropdownMenu>
-            ) : (
-               <Button
-                  asChild
-                  variant='default'
-                  className={cn(
-                     ' text-white',
-                     'px-4 py-2 rounded-md text-sm font-medium'
+                  {/* Login Button */}
+                  {loggedIn ? (
+                     <DropdownMenu>
+                        <DropdownMenuTrigger>
+                           <Avatar>
+                              <AvatarImage src='https://github.com/shadcn.png' />
+                              <AvatarFallback>CN</AvatarFallback>
+                           </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                           <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                           <DropdownMenuSeparator />
+                           <DropdownMenuItem asChild>
+                              <NavLink to='/profile'>Profile</NavLink>
+                           </DropdownMenuItem>
+                           <DropdownMenuItem>Update Account</DropdownMenuItem>
+                           <DropdownMenuItem onClick={logOut}>
+                              Logout
+                           </DropdownMenuItem>
+                        </DropdownMenuContent>
+                     </DropdownMenu>
+                  ) : (
+                     <Button
+                        asChild
+                        variant='default'
+                        className={cn(
+                           ' text-white',
+                           'px-4 py-2 rounded-md text-sm font-medium'
+                        )}
+                     >
+                        <NavLink to='/login'>Login</NavLink>
+                     </Button>
                   )}
-               >
-                  <NavLink to='/login'>Login</NavLink>
-               </Button>
-            )}
+               </div>
+            </nav>
          </div>
-      </nav>
+      </div>
    );
 };
 

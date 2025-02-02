@@ -4,6 +4,8 @@ import Login from '@/pages/login/Login';
 import Register from '@/pages/register/Register';
 import Home from '@/pages/home/Home';
 import VideoListFeed from '@/components/ui/video/VideoListFeed';
+import UserProfile from '@/pages/userProfile/UserProfile';
+import ProtectedRoute from '@/components/Shared/ProtectedRoute';
 
 const Routers = () => {
    return (
@@ -13,6 +15,14 @@ const Routers = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/reels/:videoId' element={<VideoListFeed />} />
+            <Route
+               path='/profile'
+               element={
+                  <ProtectedRoute>
+                     <UserProfile />
+                  </ProtectedRoute>
+               }
+            />
          </Route>
          <Route path='*' element={<h1>404 Not Found</h1>} />
       </Routes>
