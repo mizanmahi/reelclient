@@ -26,10 +26,14 @@ const authenticatedRequest = async (
       const config = {
          method,
          url: fullUrl,
-         headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-         },
+         headers: accessToken
+            ? {
+                 Authorization: `Bearer ${accessToken}`,
+                 'Content-Type': 'application/json',
+              }
+            : {
+                 'Content-Type': 'application/json',
+              },
          ...(method === 'post' && { data }), // Include data only for POST requests
       };
 
@@ -62,12 +66,12 @@ export const uploadVideo = async (data: FormData) => {
 // Get all videos
 export const getAllVideos = async (page: number = 1, limit: number = 10) => {
    try {
-      const accessToken = getAccessToken();
+      // const accessToken = getAccessToken();
       const url = `${BASE_API_URL}/video?page=${page}&limit=${limit}`;
 
       const res = await axios.get(url, {
          headers: {
-            Authorization: `Bearer ${accessToken}`,
+            // Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
          },
       });
@@ -82,8 +86,22 @@ export const getAllVideos = async (page: number = 1, limit: number = 10) => {
 };
 
 // Get single video by ID
-export const getVideoById = async (videoId: string) => {
-   return await authenticatedRequest('get', `/video/${videoId}`);
+export const getVideoById = async (videoId: string, userId?: string) => {
+   let url = `${BASE_API_URL}/video/${videoId}`;
+   if (userId) {
+      url += `/${userId}`;
+   }
+
+   try {
+      const res = await axios.get(url, {
+         headers: { 'Content-Type': 'application/json' },
+      });
+      return res.data;
+   } catch (error: any) {
+      throw new Error(
+         error.response?.data?.message || `Request failed: ${error.message}`
+      );
+   }
 };
 
 // Handle like/unlike

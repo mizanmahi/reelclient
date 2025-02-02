@@ -1,4 +1,5 @@
-// Helper function to get the access token
+import { clsx } from 'clsx';
+
 export const getAccessToken = () => {
    const token = localStorage.getItem('accessToken');
    if (!token) {
@@ -6,3 +7,7 @@ export const getAccessToken = () => {
    }
    return token;
 };
+
+export function cn(...inputs: any[]) {
+   return clsx(inputs);
+}

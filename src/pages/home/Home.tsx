@@ -9,8 +9,12 @@ import { NavLink } from 'react-router';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'; // shadcn Avatar
 import { Skeleton } from '@/components/ui/skeleton'; // shadcn Skeleton for loading state
+import { useUser } from '@/hooks/useUser';
+// import { useUser } from '@/hooks/useUser';
 
 const Home = () => {
+   const { user } = useUser();
+
    const [page, setPage] = useState(1);
    const limit = 5;
    const [videos, setVideos] = useState<IVideo[]>([]);
@@ -66,7 +70,7 @@ const Home = () => {
 
    return (
       <Container>
-         <UploadVideo />
+         {user && <UploadVideo />}
 
          {/* Infinite Scroll Component */}
          <InfiniteScroll
@@ -83,7 +87,14 @@ const Home = () => {
             {/* Reels Feed */}
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                {videos.map((video: IVideo, i: number) => (
-                  <NavLink to={`/reels/${video?.id}`} key={i}>
+                  <NavLink
+                     to={
+                        user?.id
+                           ? `/reels/${video?.id}/${user?.id}`
+                           : `/reels/${video?.id}`
+                     }
+                     key={i}
+                  >
                      <div
                         className='relative aspect-[9/16] w-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300'
                         onMouseEnter={() => setHoveredVideoId(video.id)} // Set hovered video ID

@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { NavLink } from 'react-router';
 import Logo from './Logo';
 import {
@@ -14,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUser } from '@/hooks/useUser';
 import { logout } from '@/apis/user';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 const navLinks = [
    { path: '/', label: 'Home' },
@@ -23,9 +23,7 @@ const navLinks = [
 ];
 
 const Menubar: React.FC = () => {
-   const { user, isLoading, setUser } = useUser();
-   console.log({ user, isLoading });
-
+   const { user, setUser } = useUser();
    const loggedIn = user?.email;
 
    const logOut = () => {
@@ -35,42 +33,55 @@ const Menubar: React.FC = () => {
    };
 
    return (
-      <div className='bg-gray-50 shadow-sm'>
-         <div className='max-w-7xl mx-auto'>
-            <nav className='flex items-center justify-between p-4 bg-gray-50 shadow-sm'>
-               <div className='flex items-center'>
-                  <NavLink to='/'>
-                     <Logo />
-                  </NavLink>
-               </div>
+      <motion.div
+         className='bg-white shadow-md sticky top-0 z-50'
+         initial={{ opacity: 0, y: -100 }}
+         animate={{ opacity: 1, y: 0 }}
+         transition={{ duration: 0.3 }}
+      >
+         <div className='max-w-7xl mx-auto px-6'>
+            <nav className='flex items-center justify-between py-4'>
+               {/* Logo */}
+               <NavLink to='/'>
+                  <Logo />
+               </NavLink>
 
-               <div className='flex items-center space-x-6'>
+               {/* Navigation Links */}
+               <div className='hidden md:flex space-x-6'>
                   {navLinks.map((navLink) => (
                      <NavLink
+                        key={navLink.path}
                         to={navLink.path}
-                        className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors'
+                        className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200'
                      >
                         {navLink.label}
                      </NavLink>
                   ))}
+               </div>
 
-                  {/* Login Button */}
+               {/* User Dropdown or Login Button */}
+               <div>
                   {loggedIn ? (
                      <DropdownMenu>
                         <DropdownMenuTrigger>
-                           <Avatar>
-                              <AvatarImage src='https://github.com/shadcn.png' />
-                              <AvatarFallback>CN</AvatarFallback>
+                           <Avatar className='cursor-pointer border border-gray-300 shadow-md hover:shadow-lg transition-shadow'>
+                              <AvatarImage
+                                 src={'https://github.com/shadcn.png'}
+                              />
+                              <AvatarFallback>U</AvatarFallback>
                            </Avatar>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent className='w-48 mt-2'>
                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
                            <DropdownMenuSeparator />
                            <DropdownMenuItem asChild>
                               <NavLink to='/profile'>Profile</NavLink>
                            </DropdownMenuItem>
                            <DropdownMenuItem>Update Account</DropdownMenuItem>
-                           <DropdownMenuItem onClick={logOut}>
+                           <DropdownMenuItem
+                              onClick={logOut}
+                              className='text-red-500 hover:bg-red-100'
+                           >
                               Logout
                            </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -79,10 +90,7 @@ const Menubar: React.FC = () => {
                      <Button
                         asChild
                         variant='default'
-                        className={cn(
-                           ' text-white',
-                           'px-4 py-2 rounded-md text-sm font-medium'
-                        )}
+                        className='bg-black  text-white px-5 py-2 rounded-md text-sm font-medium shadow-md transition-all'
                      >
                         <NavLink to='/login'>Login</NavLink>
                      </Button>
@@ -90,7 +98,7 @@ const Menubar: React.FC = () => {
                </div>
             </nav>
          </div>
-      </div>
+      </motion.div>
    );
 };
 

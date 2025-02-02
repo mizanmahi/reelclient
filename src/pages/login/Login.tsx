@@ -55,7 +55,9 @@ const Login: React.FC = () => {
             const userData = jwtDecode(res.data.token);
             setUser(userData as IUser);
 
-            navigate(location.state?.from?.pathname || '/', { replace: true });
+            navigate(location.state?.from?.pathname || '/profile', {
+               replace: true,
+            });
          }
       } catch (err: any) {
          console.error(err);
