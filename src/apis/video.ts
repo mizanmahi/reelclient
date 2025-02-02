@@ -2,7 +2,7 @@ import { getAccessToken } from '@/utils';
 import axios from 'axios';
 
 // Base API URL
-const BASE_API_URL = import.meta.env.VITE_BASE_API;
+const BASE_API_URL = import.meta.env.VITE_API_URL;
 
 // Helper function for making authenticated requests
 const authenticatedRequest = async (
@@ -51,7 +51,7 @@ export const uploadVideo = async (data: FormData) => {
 
 // Get all videos
 export const getAllVideos = async (page: number = 1, limit: number = 10) => {
-   return await authenticatedRequest('get', '/video/upload', {
+   return await authenticatedRequest('get', '/video', {
       params: { page, limit },
    });
 };

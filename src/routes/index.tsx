@@ -3,6 +3,7 @@ import App from '../App';
 import Login from '@/pages/login/Login';
 import Register from '@/pages/register/Register';
 import Home from '@/pages/home/Home';
+import VideoListFeed from '@/components/ui/video/VideoListFeed';
 
 const Routers = () => {
    return (
@@ -11,6 +12,7 @@ const Routers = () => {
             <Route index element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/reels/:videoId' element={<VideoListFeed />} />
          </Route>
          <Route path='*' element={<h1>404 Not Found</h1>} />
       </Routes>
