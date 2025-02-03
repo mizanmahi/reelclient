@@ -5,16 +5,19 @@ import { Progress } from '@/components/ui/progress'; // Adjust the import based 
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { getAccessToken } from '@/utils';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import Spinner from '@/components/Shared/Spinner';
 import { Button } from '../button';
+import { BASE_API_URL } from '@/apis/video';
 
-const UploadVideo: React.FC = () => {
+const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
    const [videoFile, setVideoFile] = useState<File | null>(null); // Type for videoFile
    const [title, setTitle] = useState<string>(''); // State for title
    const [description, setDescription] = useState<string>(''); // State for description
-   const [uploadProgress, setUploadProgress] = useState<number>(0); // State for upload progress
+   const [uploadProgress, setUploadProgress] = useState<number>(0);
+
+   const queryClient = useQueryClient(); // State for upload progress
 
    const onDrop = (acceptedFiles: File[]) => {
       setVideoFile(acceptedFiles[0]);
@@ -32,7 +35,7 @@ const UploadVideo: React.FC = () => {
    const uploadVideoMutation = useMutation({
       mutationFn: async (formData: FormData) => {
          const response = await axios.post(
-            'http://localhost:5000/api/v1/video/upload',
+            `${BASE_API_URL}/video/upload`,
             formData,
             {
                headers: {
@@ -59,7 +62,9 @@ const UploadVideo: React.FC = () => {
          setVideoFile(null);
          setTitle('');
          setDescription('');
-         setUploadProgress(0); // Reset progress after successful upload
+         setUploadProgress(0);
+         refetchVideos();
+         queryClient.invalidateQueries({ queryKey: ['videos', 'video'] });
       },
       onError: (error) => {
          console.error('Upload failed:', error);
@@ -163,8 +168,8 @@ const UploadVideo: React.FC = () => {
             >
                {uploadVideoMutation.isPending ? (
                   <div className='flex items-center gap-2'>
-                     <Spinner color='white' height='h-4' width='w-4' />
-                     <span>Uploading...</span>
+                     {/* <Spinner color='white' height='h-4' width='w-4' /> */}
+                     <span>Uploading</span>
                   </div>
                ) : (
                   'Upload Video'

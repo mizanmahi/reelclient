@@ -10,7 +10,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'; // shadcn Avatar
 import { Skeleton } from '@/components/ui/skeleton'; // shadcn Skeleton for loading state
 import { useUser } from '@/hooks/useUser';
-// import { useUser } from '@/hooks/useUser';
 
 const Home = () => {
    const { user } = useUser();
@@ -21,7 +20,7 @@ const Home = () => {
    const [hasMore, setHasMore] = useState(true);
    const [hoveredVideoId, setHoveredVideoId] = useState<string | null>(null); // Track hovered video
 
-   const { data, isLoading, isSuccess, isFetching } = useQuery({
+   const { data, isLoading, isSuccess, isFetching, refetch } = useQuery({
       queryKey: ['videos', page, limit],
       queryFn: () => getAllVideos(page, limit),
       enabled: !!page && hasMore, // Stop fetching when hasMore is false
@@ -35,7 +34,7 @@ const Home = () => {
             setHasMore(false); // No more videos to fetch
          }
 
-         // Deduplicate videos based on their IDs
+         // remove duplicate videos based on their IDs
          setVideos((prevVideos) => {
             const existingIds = new Set(prevVideos.map((v) => v.id));
             const uniqueNewVideos = newVideos.filter(
@@ -52,10 +51,20 @@ const Home = () => {
       }
    };
 
+   const handleVideoUpload = () => {
+      // Reset the videos array and page state
+      setVideos([]);
+      setPage(1);
+      setHasMore(true);
+
+      // Refetch the videos starting from the first page
+      refetch();
+   };
+
    if (isLoading && videos.length === 0) {
       return (
          <Container>
-            <UploadVideo />
+            <UploadVideo refetchVideos={handleVideoUpload} />
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                {Array.from({ length: 4 }).map((_, i) => (
                   <Skeleton
@@ -70,7 +79,7 @@ const Home = () => {
 
    return (
       <Container>
-         {user && <UploadVideo />}
+         {user && <UploadVideo refetchVideos={handleVideoUpload} />}
 
          {/* Infinite Scroll Component */}
          <InfiniteScroll

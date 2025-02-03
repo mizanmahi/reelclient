@@ -2,7 +2,7 @@ import { getAccessToken } from '@/utils';
 import axios from 'axios';
 
 // Base API URL
-const BASE_API_URL = import.meta.env.VITE_API_URL;
+export const BASE_API_URL = import.meta.env.VITE_API_URL;
 
 // Helper function for making authenticated requests
 const authenticatedRequest = async (

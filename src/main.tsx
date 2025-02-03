@@ -7,7 +7,7 @@ import './index.css';
 import Routers from './routes/index.tsx';
 import UserProvider from './providers/userProvider.tsx';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
    <StrictMode>
