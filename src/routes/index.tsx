@@ -7,6 +7,7 @@ import VideoListFeed from '@/pages/VideoListFeed/VideoListFeed';
 import UserProfile from '@/pages/userProfile/UserProfile';
 import ProtectedRoute from '@/components/Shared/ProtectedRoute';
 import { useUser } from '@/hooks/useUser';
+import NotFound from '@/pages/notFound/NotFound';
 
 const Routers = () => {
    const { user } = useUser();
@@ -36,7 +37,7 @@ const Routers = () => {
                }
             />
          </Route>
-         <Route path='*' element={<h1>404 Not Found</h1>} />
+         <Route path='*' element={<NotFound />} />
       </Routes>
    );
 };

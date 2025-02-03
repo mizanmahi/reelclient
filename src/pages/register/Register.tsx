@@ -152,7 +152,6 @@ const Register: React.FC = () => {
                            </FormControl>
                            <FormDescription>
                               Your password must be at least 8 characters long
-                              with at least a letter.
                            </FormDescription>
                            <FormMessage />
                         </FormItem>

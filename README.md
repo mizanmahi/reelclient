@@ -1,50 +1,77 @@
-# React + TypeScript + Vite
+# Reels Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Reels Frontend is a modern web application built with **React** and **Vite**. It utilizes various libraries for styling, state management, and data fetching to create an efficient and seamless user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### **Tech Stack**
 
-## Expanding the ESLint configuration
+-  **Framework:** React + Vite
+-  **Styling:** Tailwind CSS and shadcn/ui
+-  **State Management:** React Context API
+-  **Data Fetching:** TanStack React Query
+-  **Routing:** React Router
+-  **Animations:** Framer Motion
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## **Running the Application**
 
-- Configure the top-level `parserOptions` property like this:
+### **1. Running in Docker**
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+#### **Prerequisites**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+-  Install [Docker](https://docs.docker.com/get-docker/)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+#### **Steps to Run in Docker**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. Clone the repository:
+   ```sh
+   git clone <frontend_repo_link>
+   cd reels-frontend
+   ```
+2. Build and run the Docker container:
+   ```sh
+   docker build -t reels-frontend .
+   docker run -p 3000:3000 reels-frontend
+   docker run --name reels-frontend-container -p 3000:3000 reels-frontend yarn dev --host
+   ```
+3. Access the application at:
+   ```
+   http://localhost:3000
+   ```
+
+### **2. Running Locally**
+
+#### **Prerequisites**
+
+-  Install [Node.js](https://nodejs.org/en/download/) (version 20 or later)
+-  Install [Yarn](https://yarnpkg.com/getting-started/install)
+
+#### **Steps to Run Locally**
+
+1. Clone the repository:
+   ```sh
+   git clone <frontend_repo_link>
+   cd reels-frontend
+   ```
+2. Install dependencies:
+   ```sh
+   yarn install
+   ```
+3. Start the development server:
+   ```sh
+   yarn dev
+   ```
+4. Access the application at:
+   ```
+   http://localhost:3000
+   ```
+
+## **Backend Repository**
+
+The backend for this application is hosted separately. You can find it here:
+
+[Backend Repository Link](https://github.com/mizanmahi/reelserver.git)
+
+---
+
+⚠ **Warning:** Make sure to spin up the backend server before checking the frontend to ensure full functionality!

@@ -82,78 +82,82 @@ const Home = () => {
          {user && <UploadVideo refetchVideos={handleVideoUpload} />}
 
          {/* Infinite Scroll Component */}
-         <InfiniteScroll
-            dataLength={videos.length}
-            next={fetchMoreVideos}
-            hasMore={hasMore}
-            loader={<h4>Loading more videos...</h4>}
-            endMessage={
-               <p className='text-center text-gray-400 mt-5'>
-                  You have reached the end
-               </p>
-            }
-         >
-            {/* Reels Feed */}
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-               {videos.map((video: IVideo, i: number) => (
-                  <NavLink
-                     to={
-                        user?.id
-                           ? `/reels/${video?.id}/${user?.id}`
-                           : `/reels/${video?.id}`
-                     }
-                     key={i}
-                  >
-                     <div
-                        className='relative aspect-[9/16] w-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300'
-                        onMouseEnter={() => setHoveredVideoId(video.id)} // Set hovered video ID
-                        onMouseLeave={() => setHoveredVideoId(null)} // Clear hovered video ID
+         {videos?.length > 0 ? (
+            <InfiniteScroll
+               dataLength={videos.length}
+               next={fetchMoreVideos}
+               hasMore={hasMore}
+               loader={<h4>Loading more videos...</h4>}
+               endMessage={
+                  <p className='text-center text-gray-400 mt-5'>
+                     You have reached the end
+                  </p>
+               }
+            >
+               {/* Reels Feed */}
+               <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+                  {videos.map((video: IVideo, i: number) => (
+                     <NavLink
+                        to={
+                           user?.id
+                              ? `/reels/${video?.id}/${user?.id}`
+                              : `/reels/${video?.id}`
+                        }
+                        key={i}
                      >
-                        {/* Video Player */}
-                        <ReactPlayer
-                           url={video.videoUrl}
-                           width='100%'
-                           height='100%'
-                           controls={false} // Hide controls for a cleaner look
-                           playing={hoveredVideoId === video.id} // Play only if hovered
-                           loop={true}
-                           muted={true}
-                           style={{ position: 'absolute', top: 0, left: 0 }}
-                        />
+                        <div
+                           className='relative aspect-[9/16] w-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300'
+                           onMouseEnter={() => setHoveredVideoId(video.id)} // Set hovered video ID
+                           onMouseLeave={() => setHoveredVideoId(null)} // Clear hovered video ID
+                        >
+                           {/* Video Player */}
+                           <ReactPlayer
+                              url={video.videoUrl}
+                              width='100%'
+                              height='100%'
+                              controls={false} // Hide controls for a cleaner look
+                              playing={hoveredVideoId === video.id} // Play only if hovered
+                              loop={true}
+                              muted={true}
+                              style={{ position: 'absolute', top: 0, left: 0 }}
+                           />
 
-                        {/* Dark Overlay for Text Visibility */}
-                        <div className='absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none' />
+                           {/* Dark Overlay for Text Visibility */}
+                           <div className='absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none' />
 
-                        {/* Avatar at the Top */}
-                        <div className='absolute top-2 left-2 flex items-center space-x-2'>
-                           <Avatar className='h-8 w-8 border-2 border-white'>
-                              <AvatarImage
-                                 src={'n/a'}
-                                 alt={video.uploader.name}
-                              />
-                              <AvatarFallback>
-                                 {video.uploader.name[0]}
-                              </AvatarFallback>
-                           </Avatar>
-                           <span className='text-white text-sm font-semibold'>
-                              {video.uploader.name}
-                           </span>
+                           {/* Avatar at the Top */}
+                           <div className='absolute top-2 left-2 flex items-center space-x-2'>
+                              <Avatar className='h-8 w-8 border-2 border-white'>
+                                 <AvatarImage
+                                    src={'n/a'}
+                                    alt={video.uploader.name}
+                                 />
+                                 <AvatarFallback>
+                                    {video.uploader.name[0]}
+                                 </AvatarFallback>
+                              </Avatar>
+                              <span className='text-white text-sm font-semibold'>
+                                 {video.uploader.name}
+                              </span>
+                           </div>
+
+                           {/* Uploader Name at Bottom Left */}
+                           <div className='absolute bottom-2 left-2 text-white text-sm font-semibold'>
+                              {video.title}
+                           </div>
+
+                           {/* Views Count at Bottom Right */}
+                           <div className='absolute bottom-2 right-2 text-white text-sm font-semibold'>
+                              {video.viewCount} views
+                           </div>
                         </div>
-
-                        {/* Uploader Name at Bottom Left */}
-                        <div className='absolute bottom-2 left-2 text-white text-sm font-semibold'>
-                           {video.title}
-                        </div>
-
-                        {/* Views Count at Bottom Right */}
-                        <div className='absolute bottom-2 right-2 text-white text-sm font-semibold'>
-                           {video.viewCount} views
-                        </div>
-                     </div>
-                  </NavLink>
-               ))}
-            </div>
-         </InfiniteScroll>
+                     </NavLink>
+                  ))}
+               </div>
+            </InfiniteScroll>
+         ) : (
+            <div className='text-center p-2 text-xl'>No Video Yet😊</div>
+         )}
       </Container>
    );
 };

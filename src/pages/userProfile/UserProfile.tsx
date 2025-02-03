@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import Modal from '@/components/Shared/Modal';
 import { useState } from 'react';
-// import { Loader2 } from 'lucide-react';
+import ReactPlayer from 'react-player';
 
 export default function UserProfile() {
    const { data, isLoading, error } = useQuery({
@@ -21,11 +21,14 @@ export default function UserProfile() {
    });
 
    const [isModalOpen, setIsModalOpen] = useState(false);
+   const [selectedVideo, setSelectedVideo] = useState<{
+      url: string;
+      title: string;
+   } | null>(null);
 
    if (isLoading) {
       return (
          <div className='h-[calc(100vh-4.5rem)] flex items-center flex-col justify-center gap-4'>
-            {/* <Loader2 className='h-8 w-8 animate-spin text-blue-500' /> */}
             <Skeleton className='max-w-4xl h-[200px]' />
             <Skeleton className='max-w-4xl h-[200px] ' />
             <Skeleton className='max-w-4xl h-[200px] ' />
@@ -49,10 +52,14 @@ export default function UserProfile() {
       mostPopularVideo,
       engagementRate,
       averageViews,
-      //   totalEngagements,
       engagementBreakdown,
       profile,
    } = data.data || {};
+
+   const handleWatchVideo = (videoUrl: string, videoTitle: string) => {
+      setSelectedVideo({ url: videoUrl, title: videoTitle });
+      setIsModalOpen(true);
+   };
 
    return (
       <div className='min-h-screen bg-gray-50 p-6'>
@@ -117,12 +124,17 @@ export default function UserProfile() {
                               Views: {mostPopularVideo.viewCount} | Likes:{' '}
                               {mostPopularVideo.likeCount}
                            </p>
-                           <a
-                              href={`http://localhost:9000/videos/videos/${mostPopularVideo.id}`}
+                           <button
+                              onClick={() =>
+                                 handleWatchVideo(
+                                    mostPopularVideo.videoUrl,
+                                    mostPopularVideo.title
+                                 )
+                              }
                               className='text-sm text-blue-500 hover:underline mt-2 inline-block'
                            >
                               Watch Video
-                           </a>
+                           </button>
                         </div>
                      </div>
                   </CardContent>
@@ -180,12 +192,14 @@ export default function UserProfile() {
                                  {video.likeCount}
                               </p>
                            </div>
-                           <a
-                              href={`http://localhost:9000/videos/videos/${video.id}`}
+                           <button
+                              onClick={() =>
+                                 handleWatchVideo(video.videoUrl, video.title)
+                              }
                               className='text-sm text-blue-500 hover:underline'
                            >
                               Watch Video
-                           </a>
+                           </button>
                         </div>
                      ))}
                   </div>
@@ -193,14 +207,30 @@ export default function UserProfile() {
             </Card>
          </div>
 
-         <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
-
+         {/* Video Modal */}
          <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            // title='test modal'
+            title={selectedVideo?.title || 'Video Player'}
          >
-            <div>test</div>
+            <div className='w-full h-full flex justify-center items-center'>
+               {selectedVideo && (
+                  <ReactPlayer
+                     url={selectedVideo.url}
+                     controls={true}
+                     playing={true}
+                     width='100%'
+                     height='100%'
+                     config={{
+                        file: {
+                           attributes: {
+                              controlsList: 'nodownload', // Disable download option
+                           },
+                        },
+                     }}
+                  />
+               )}
+            </div>
          </Modal>
       </div>
    );
