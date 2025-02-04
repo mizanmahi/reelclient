@@ -26,14 +26,13 @@ ReelShare is a modern web application built with **React** and **Vite**. It util
 
 1. Clone the repository:
    ```sh
-   git clone <frontend_repo_link>
-   cd reels-frontend
+   git clone <https://github.com/mizanmahi/reelclient.git>
+   cd reelclient
    ```
 2. Build and run the Docker container:
    ```sh
-   docker build -t reels-frontend .
-   docker run -p 3000:3000 reels-frontend
-   docker run --name reels-frontend-container -p 3000:3000 reels-frontend yarn dev --host
+   docker build -t reelclient .
+   docker run --name reelclient-container -p 3000:3000 reelclient yarn dev --host
    ```
 3. Access the application at:
    ```
@@ -51,8 +50,8 @@ ReelShare is a modern web application built with **React** and **Vite**. It util
 
 1. Clone the repository:
    ```sh
-   git clone <frontend_repo_link>
-   cd reels-frontend
+   git clone <https://github.com/mizanmahi/reelclient.git>
+   cd reelclient
    ```
 2. Install dependencies:
    ```sh
