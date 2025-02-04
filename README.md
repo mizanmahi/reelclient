@@ -1,14 +1,15 @@
-# Reels Frontend
+# ReelShare Client
 
 ## Overview
 
-Reels Frontend is a modern web application built with **React** and **Vite**. It utilizes various libraries for styling, state management, and data fetching to create an efficient and seamless user experience.
+ReelShare is a modern web application built with **React** and **Vite**. It utilizes various libraries for styling, state management, and data fetching to create an efficient and seamless user experience.
 
 ### **Tech Stack**
 
 -  **Framework:** React + Vite
 -  **Styling:** Tailwind CSS and shadcn/ui
 -  **State Management:** React Context API
+-  **Form Handling:** React hook form
 -  **Data Fetching:** TanStack React Query
 -  **Routing:** React Router
 -  **Animations:** Framer Motion
