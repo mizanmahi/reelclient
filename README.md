@@ -9,14 +9,22 @@ ReelShare is a modern web application built with **React** and **Vite**. It util
 -  **Framework:** React + Vite
 -  **Styling:** Tailwind CSS and shadcn/ui
 -  **State Management:** React Context API
--  **Form Handling:** React hook form
+-  **Form Handling:** React Hook Form
 -  **Data Fetching:** TanStack React Query
 -  **Routing:** React Router
 -  **Animations:** Framer Motion
 
 ## **Running the Application**
 
-### **1. Running in Docker**
+### **1. Access the Deployed Application**
+
+The ReelShare Client is deployed and accessible online. You can check it out at:
+
+🔗 [ReelShare Deployed Application](https://reelshareclient.netlify.app/)
+
+---
+
+### **2. Running in Docker**
 
 #### **Prerequisites**
 
@@ -39,7 +47,9 @@ ReelShare is a modern web application built with **React** and **Vite**. It util
    http://localhost:3000
    ```
 
-### **2. Running Locally**
+---
+
+### **3. Running Locally**
 
 #### **Prerequisites**
 
@@ -66,12 +76,12 @@ ReelShare is a modern web application built with **React** and **Vite**. It util
    http://localhost:3000
    ```
 
+---
+
 ## **Backend Repository**
 
 The backend for this application is hosted separately. You can find it here:
 
-[Backend Repository Link](https://github.com/mizanmahi/reelserver.git)
-
----
+🔗 [Backend Repository Link](https://github.com/mizanmahi/reelserver.git)
 
 ⚠ **Warning:** Make sure to spin up the backend server before checking the frontend to ensure full functionality!
