@@ -34,7 +34,7 @@ const Home = () => {
             setHasMore(false); // No more videos to fetch
          }
 
-         // remove duplicate videos based on their IDs
+         // Remove duplicate videos based on their IDs
          setVideos((prevVideos) => {
             const existingIds = new Set(prevVideos.map((v) => v.id));
             const uniqueNewVideos = newVideos.filter(
@@ -63,13 +63,13 @@ const Home = () => {
 
    if (isLoading && videos.length === 0) {
       return (
-         <Container>
+         <Container className='bg-black text-white'>
             <UploadVideo refetchVideos={handleVideoUpload} />
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                {Array.from({ length: 4 }).map((_, i) => (
                   <Skeleton
                      key={i}
-                     className='aspect-[9/16] w-full rounded-lg'
+                     className='aspect-[9/16] w-full rounded-lg bg-gray-700'
                   />
                ))}
             </div>
@@ -78,7 +78,7 @@ const Home = () => {
    }
 
    return (
-      <Container>
+      <Container className='bg-black text-white'>
          {user && <UploadVideo refetchVideos={handleVideoUpload} />}
 
          {/* Infinite Scroll Component */}
@@ -87,7 +87,11 @@ const Home = () => {
                dataLength={videos.length}
                next={fetchMoreVideos}
                hasMore={hasMore}
-               loader={<h4>Loading more videos...</h4>}
+               loader={
+                  <h4 className='text-white text-center'>
+                     Loading more videos...
+                  </h4>
+               }
                endMessage={
                   <p className='text-center text-gray-400 mt-5'>
                      You have reached the end
@@ -106,7 +110,7 @@ const Home = () => {
                         key={i}
                      >
                         <div
-                           className='relative aspect-[9/16] w-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300'
+                           className='relative aspect-[9/16] w-full rounded-lg overflow-hidden shadow-lg bg-gray-800 hover:shadow-xl transition-shadow duration-300'
                            onMouseEnter={() => setHoveredVideoId(video.id)} // Set hovered video ID
                            onMouseLeave={() => setHoveredVideoId(null)} // Clear hovered video ID
                         >
@@ -147,7 +151,7 @@ const Home = () => {
                            </div>
 
                            {/* Views Count at Bottom Right */}
-                           <div className='absolute bottom-2 right-2 text-white text-sm font-semibold'>
+                           <div className='absolute bottom-2 right-2 text-gray-300 text-sm font-semibold'>
                               {video.viewCount} views
                            </div>
                         </div>
@@ -156,7 +160,9 @@ const Home = () => {
                </div>
             </InfiniteScroll>
          ) : (
-            <div className='text-center p-2 text-xl'>No Video Yet😊</div>
+            <div className='text-center p-2 text-xl text-gray-400'>
+               No Video Yet 😊
+            </div>
          )}
       </Container>
    );

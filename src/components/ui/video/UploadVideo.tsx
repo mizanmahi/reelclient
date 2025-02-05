@@ -12,12 +12,12 @@ import { Button } from '../button';
 import { BASE_API_URL } from '@/apis/video';
 
 const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
-   const [videoFile, setVideoFile] = useState<File | null>(null); // Type for videoFile
-   const [title, setTitle] = useState<string>(''); // State for title
-   const [description, setDescription] = useState<string>(''); // State for description
+   const [videoFile, setVideoFile] = useState<File | null>(null);
+   const [title, setTitle] = useState<string>('');
+   const [description, setDescription] = useState<string>('');
    const [uploadProgress, setUploadProgress] = useState<number>(0);
 
-   const queryClient = useQueryClient(); // State for upload progress
+   const queryClient = useQueryClient();
 
    const onDrop = (acceptedFiles: File[]) => {
       setVideoFile(acceptedFiles[0]);
@@ -26,12 +26,11 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
    const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
       accept: {
-         'video/mp4': [], // Accept only MP4 files
+         'video/mp4': [],
       },
       maxFiles: 1,
    });
 
-   // Define the mutation for uploading video
    const uploadVideoMutation = useMutation({
       mutationFn: async (formData: FormData) => {
          const response = await axios.post(
@@ -47,7 +46,7 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
                      const percentCompleted = Math.round(
                         (progressEvent.loaded * 100) / progressEvent.total
                      );
-                     setUploadProgress(percentCompleted); // Update progress
+                     setUploadProgress(percentCompleted);
                   }
                },
             }
@@ -55,7 +54,7 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
          return response.data;
       },
       onMutate: () => {
-         setUploadProgress(0); // Reset progress when the mutation starts
+         setUploadProgress(0);
       },
       onSuccess: (data) => {
          toast.success(data.message || 'Upload successful!');
@@ -69,7 +68,7 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
       onError: (error) => {
          console.error('Upload failed:', error);
          toast.error(error.message || 'Upload failed.');
-         setUploadProgress(0); // Reset progress on error
+         setUploadProgress(0);
       },
    });
 
@@ -88,7 +87,7 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
 
    return (
       <div
-         className='max-w-full mx-auto my-4 mb-14 p-6 bg-white rounded-lg shadow-sm'
+         className='max-w-full mx-auto my-4 mb-14 p-6 bg-black rounded-lg shadow-sm'
          style={{
             boxShadow:
                'var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)',
@@ -98,19 +97,21 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
          <div
             {...getRootProps()}
             className={`border-2 border-dashed ${
-               isDragActive ? 'border-blue-500' : 'border-gray-300'
-            } rounded-lg p-8 text-center cursor-pointer transition-colors duration-300 hover:border-blue-500`}
+               isDragActive ? 'border-white' : 'border-gray-600'
+            } rounded-lg p-8 text-center cursor-pointer transition-colors duration-300 hover:border-white`}
          >
             <input {...getInputProps()} />
-            <p className='text-gray-600'>
+            <p className='text-gray-400'>
                {isDragActive
                   ? 'Drop the video here...'
                   : 'Drag & drop a video file here, or click to select one'}
             </p>
             {videoFile && (
-               <p className='mt-2 text-sm text-gray-500'>
+               <p className='mt-2 text-sm text-gray-400'>
                   Selected file:{' '}
-                  <span className='font-semibold'>{videoFile.name}</span>
+                  <span className='font-semibold text-white'>
+                     {videoFile.name}
+                  </span>
                </p>
             )}
          </div>
@@ -118,8 +119,14 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
          {/* Progress Bar */}
          {uploadVideoMutation.isPending && uploadProgress !== 100 && (
             <div className='mt-6'>
-               <Progress value={uploadProgress} className='h-2 bg-gray-200' />
-               <p className='mt-2 text-sm text-gray-600'>
+               <Progress
+                  value={uploadProgress}
+                  className='h-2 bg-gray-500'
+                  style={
+                     { '--progress-color': '#ffffff' } as React.CSSProperties
+                  }
+               />
+               <p className='mt-2 text-sm text-gray-400'>
                   Uploading... {uploadProgress}%
                </p>
             </div>
@@ -128,8 +135,8 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
          {/* Processing State */}
          {uploadProgress === 100 && (
             <div className='mt-6 flex items-center justify-center gap-3'>
-               <Spinner color='blue' height='h-6' width='w-6' />
-               <p className='text-gray-600'>Processing video...</p>
+               <Spinner color='white' height='h-6' width='w-6' />
+               <p className='text-gray-400'>Processing video...</p>
             </div>
          )}
 
@@ -141,15 +148,15 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
                   placeholder='Enter video title...'
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  disabled={uploadVideoMutation.isPending} // Disable during upload
+                  className='w-full p-3 border border-gray-600 bg-black text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400'
+                  disabled={uploadVideoMutation.isPending}
                />
                <Textarea
                   placeholder='Enter video description...'
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className='w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  disabled={uploadVideoMutation.isPending} // Disable during upload
+                  className='w-full p-3 border border-gray-600 bg-black text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400'
+                  disabled={uploadVideoMutation.isPending}
                />
             </div>
          )}
@@ -164,11 +171,10 @@ const UploadVideo = ({ refetchVideos }: { refetchVideos: any }) => {
                   !title ||
                   !description
                }
-               className='w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed'
+               className='w-full mt-6 bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed'
             >
                {uploadVideoMutation.isPending ? (
                   <div className='flex items-center gap-2'>
-                     {/* <Spinner color='white' height='h-4' width='w-4' /> */}
                      <span>Uploading</span>
                   </div>
                ) : (

@@ -17,9 +17,8 @@ import { motion } from 'framer-motion';
 
 const navLinks = [
    { path: '/', label: 'Home' },
-   { path: '/about', label: 'About' },
    { path: '/services', label: 'Services' },
-   { path: '/contact', label: 'Contact' },
+   { path: '/connect', label: 'Connect' },
 ];
 
 const Menubar: React.FC = () => {

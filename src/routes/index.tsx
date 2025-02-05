@@ -8,6 +8,7 @@ import UserProfile from '@/pages/userProfile/UserProfile';
 import ProtectedRoute from '@/components/Shared/ProtectedRoute';
 import { useUser } from '@/hooks/useUser';
 import NotFound from '@/pages/notFound/NotFound';
+import ComingSoon from '@/pages/comingSoon/ComingSoon';
 
 const Routers = () => {
    const { user } = useUser();
@@ -19,6 +20,8 @@ const Routers = () => {
             <Route index element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/services' element={<ComingSoon />} />
+            <Route path='/connect' element={<ComingSoon />} />
             {user?.id ? (
                <Route
                   path='/reels/:videoId/:userId'
