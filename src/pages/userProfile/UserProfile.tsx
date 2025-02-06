@@ -40,7 +40,9 @@ export default function UserProfile() {
    if (error) {
       return (
          <div className='min-h-screen bg-gray-50 p-6 flex items-center justify-center'>
-            <p className='text-red-500'>Error loading data</p>
+            <p className='text-red-500'>
+               Error loading data: {`${error.message}`}
+            </p>
          </div>
       );
    }
