@@ -101,6 +101,61 @@ const Home = () => {
                {/* Reels Feed */}
                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
                   {videos.map((video: IVideo, i: number) => (
+                     // <NavLink
+                     //    to={
+                     //       user?.id
+                     //          ? `/reels/${video?.id}/${user?.id}`
+                     //          : `/reels/${video?.id}`
+                     //    }
+                     //    key={i}
+                     // >
+                     //    <div
+                     //       className='relative aspect-[9/16] w-full rounded-lg overflow-hidden shadow-lg bg-gray-800 hover:shadow-xl transition-shadow duration-300'
+                     //       onMouseEnter={() => setHoveredVideoId(video.id)} // Set hovered video ID
+                     //       onMouseLeave={() => setHoveredVideoId(null)} // Clear hovered video ID
+                     //    >
+                     //       {/* Video Player */}
+                     //       <ReactPlayer
+                     //          url={video.videoUrl}
+                     //          width='100%'
+                     //          height='100%'
+                     //          controls={false} // Hide controls for a cleaner look
+                     //          playing={hoveredVideoId === video.id} // Play only if hovered
+                     //          loop={true}
+                     //          muted={true}
+                     //          style={{ position: 'absolute', top: 0, left: 0 }}
+                     //       />
+
+                     //       {/* Dark Overlay for Text Visibility */}
+                     //       <div className='absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none' />
+
+                     //       {/* Avatar at the Top */}
+                     //       <div className='absolute top-2 left-2 flex items-center space-x-2'>
+                     //          <Avatar className='h-8 w-8 border-2 border-white'>
+                     //             <AvatarImage
+                     //                src={'n/a'}
+                     //                alt={video.uploader.name}
+                     //             />
+                     //             <AvatarFallback>
+                     //                {video.uploader.name[0]}
+                     //             </AvatarFallback>
+                     //          </Avatar>
+                     //          <span className='text-white text-sm font-semibold'>
+                     //             {video.uploader.name}
+                     //          </span>
+                     //       </div>
+
+                     //       {/* Uploader Name at Bottom Left */}
+                     //       <div className='absolute bottom-2 left-2 text-white text-sm font-semibold'>
+                     //          {video.title}
+                     //       </div>
+
+                     //       {/* Views Count at Bottom Right */}
+                     //       <div className='absolute bottom-2 right-2 text-gray-300 text-sm font-semibold'>
+                     //          {video.viewCount} views
+                     //       </div>
+                     //    </div>
+                     // </NavLink>
                      <NavLink
                         to={
                            user?.id
@@ -114,17 +169,30 @@ const Home = () => {
                            onMouseEnter={() => setHoveredVideoId(video.id)} // Set hovered video ID
                            onMouseLeave={() => setHoveredVideoId(null)} // Clear hovered video ID
                         >
-                           {/* Video Player */}
-                           <ReactPlayer
-                              url={video.videoUrl}
-                              width='100%'
-                              height='100%'
-                              controls={false} // Hide controls for a cleaner look
-                              playing={hoveredVideoId === video.id} // Play only if hovered
-                              loop={true}
-                              muted={true}
-                              style={{ position: 'absolute', top: 0, left: 0 }}
-                           />
+                           {hoveredVideoId === video.id ? (
+                              // Play video on hover
+                              <ReactPlayer
+                                 url={video.videoUrl}
+                                 width='100%'
+                                 height='100%'
+                                 controls={false} // Hide controls for a cleaner look
+                                 playing={true} // Play video when hovered
+                                 loop={true}
+                                 muted={true}
+                                 style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                 }}
+                              />
+                           ) : (
+                              // Show thumbnail when not hovered
+                              <img
+                                 src={video.thumbnail}
+                                 alt={video.title}
+                                 className='absolute inset-0 w-full h-full object-cover'
+                              />
+                           )}
 
                            {/* Dark Overlay for Text Visibility */}
                            <div className='absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none' />
