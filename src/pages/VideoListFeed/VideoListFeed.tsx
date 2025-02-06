@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router';
 import ReactPlayer from 'react-player';
 import { Button } from '@/components/ui/button'; // shadcn Button
-import { Heart, ChevronLeft, ChevronRight } from 'lucide-react'; // Icons from Lucide
+import { Heart, ChevronLeft, ChevronRight, Eye } from 'lucide-react'; // Icons from Lucide
 import { useUser } from '@/hooks/useUser';
 import Spinner from '@/components/Shared/Spinner';
 
@@ -13,6 +13,7 @@ const VideoListFeed = () => {
    const navigate = useNavigate();
    const { user } = useUser();
    const [isLiked, setIsLiked] = useState(false);
+   const [likeCount, setLikeCount] = useState(0);
 
    const {
       data: video,
@@ -27,17 +28,18 @@ const VideoListFeed = () => {
       refetchOnWindowFocus: false,
    });
 
-   // Update isLiked state when video data is available
    useEffect(() => {
       if (video?.data?.isLiked !== undefined) {
          setIsLiked(video.data.isLiked);
+         setLikeCount(video.data.likeCount);
       }
    }, [video]);
 
    const { mutate: toggleLike, isPending: liking } = useMutation({
       mutationFn: () => likeUnlike(videoId as string),
       onSuccess: () => {
-         setIsLiked((prev) => !prev); // Toggle like state on success
+         setIsLiked((prev) => !prev); // Toggle like state
+         setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1)); // Update count
       },
    });
 
@@ -60,8 +62,8 @@ const VideoListFeed = () => {
                         url={video.data?.videoUrl}
                         width='100%'
                         height='100%'
-                        controls={true}
-                        playing={true}
+                        controls
+                        playing
                         light={video?.data?.thumbnailUrl}
                         loop={false}
                         muted={false}
@@ -101,29 +103,44 @@ const VideoListFeed = () => {
                      </button>
                   )}
 
-                  {/* Like Button */}
-                  {userId && (
-                     <div
-                        className='absolute bottom-20 right-3'
-                        style={{ bottom: '150px' }}
-                     >
+                  {/* Video Info Section */}
+                  <div
+                     className='absolute right-4 flex flex-col items-end gap-3'
+                     style={{ bottom: '150px' }}
+                  >
+                     {/* Like Button and Count */}
+                     <div className='flex items-center'>
                         <Button
                            variant='ghost'
                            size='icon'
-                           className='p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors duration-300'
+                           // className='p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors duration-300'
                            onClick={() => toggleLike()}
-                           disabled={liking}
+                           disabled={!userId || liking}
                         >
                            {liking ? (
-                              <Spinner className='w-8 h-8' />
+                              <Spinner className='w-5 h-5' />
                            ) : isLiked ? (
-                              <Heart className='w-8 h-8 text-red-500 fill-red-500' />
+                              <Heart className='w-5 h-5 text-red-500 fill-red-500' />
                            ) : (
-                              <Heart className='w-8 h-8 text-white' />
+                              <Heart className='w-5 h-5 text-white' />
                            )}
                         </Button>
+                        <span className='text-white text-sm'>{likeCount}</span>
                      </div>
-                  )}
+
+                     {/* View Count */}
+                     <div className='flex items-center gap-2'>
+                        <Eye className='w-5 h-5 text-white' />
+                        <span className='text-white text-sm'>
+                           {video.data?.viewCount}
+                        </span>
+                     </div>
+
+                     {/* Uploader Name */}
+                     <span className='text-white text-sm font-semibold'>
+                        {video.data?.uploader.name}
+                     </span>
+                  </div>
                </>
             ) : (
                <p className='text-white text-center'>No video found.</p>
