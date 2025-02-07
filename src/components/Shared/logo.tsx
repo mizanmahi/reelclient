@@ -5,7 +5,7 @@ const Logo: React.FC<React.SVGProps<SVGSVGElement>> = () => {
          fill='none'
          viewBox='0 0 24 24'
          stroke-width='1.5'
-         stroke='currentColor'
+         stroke='#ffffff'
          className='size-10'
       >
          <path

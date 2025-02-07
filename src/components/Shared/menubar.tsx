@@ -33,7 +33,7 @@ const Menubar: React.FC = () => {
 
    return (
       <motion.div
-         className='bg-white shadow-md sticky top-0 z-50'
+         className='bg-gray-900 shadow-lg sticky top-0 z-50'
          initial={{ opacity: 0, y: -100 }}
          animate={{ opacity: 1, y: 0 }}
          transition={{ duration: 0.3 }}
@@ -51,7 +51,7 @@ const Menubar: React.FC = () => {
                      <NavLink
                         key={navLink.path}
                         to={navLink.path}
-                        className='text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200'
+                        className='text-sm font-medium text-gray-300 hover:text-gray-50 transition-colors duration-200'
                      >
                         {navLink.label}
                      </NavLink>
@@ -63,23 +63,32 @@ const Menubar: React.FC = () => {
                   {loggedIn ? (
                      <DropdownMenu>
                         <DropdownMenuTrigger>
-                           <Avatar className='cursor-pointer border border-gray-300 shadow-md hover:shadow-lg transition-shadow'>
+                           <Avatar className='cursor-pointer border border-gray-700 shadow-md hover:shadow-lg transition-shadow'>
                               <AvatarImage
                                  src={'https://github.com/shadcn.png'}
                               />
                               <AvatarFallback>U</AvatarFallback>
                            </Avatar>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-48 mt-2'>
-                           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                           <DropdownMenuSeparator />
+                        <DropdownMenuContent className='w-48 mt-2 bg-gray-800 border border-gray-700'>
+                           <DropdownMenuLabel className='text-gray-400'>
+                              My Account
+                           </DropdownMenuLabel>
+                           <DropdownMenuSeparator className='bg-gray-700' />
                            <DropdownMenuItem asChild>
-                              <NavLink to='/profile'>Profile</NavLink>
+                              <NavLink
+                                 to='/profile'
+                                 className='text-gray-300 hover:bg-gray-700 hover:text-white'
+                              >
+                                 Profile
+                              </NavLink>
                            </DropdownMenuItem>
-                           <DropdownMenuItem>Update Account</DropdownMenuItem>
+                           <DropdownMenuItem className='text-gray-300 hover:bg-gray-700 hover:text-white'>
+                              Update Account
+                           </DropdownMenuItem>
                            <DropdownMenuItem
                               onClick={logOut}
-                              className='text-red-500 hover:bg-red-100'
+                              className='text-red-500 hover:bg-red-600'
                            >
                               Logout
                            </DropdownMenuItem>
@@ -89,7 +98,7 @@ const Menubar: React.FC = () => {
                      <Button
                         asChild
                         variant='default'
-                        className='bg-black  text-white px-5 py-2 rounded-md text-sm font-medium shadow-md transition-all'
+                        className='bg-gray-800 text-gray-300 px-5 py-2 rounded-md text-sm font-medium shadow-md hover:bg-gray-700 hover:text-white transition-all'
                      >
                         <NavLink to='/login'>Login</NavLink>
                      </Button>
