@@ -28,18 +28,18 @@ export default function UserProfile() {
 
    if (isLoading) {
       return (
-         <div className='h-[calc(100vh-4.5rem)] flex items-center flex-col justify-center gap-4'>
-            <Skeleton className='max-w-4xl h-[200px]' />
-            <Skeleton className='max-w-4xl h-[200px] ' />
-            <Skeleton className='max-w-4xl h-[200px] ' />
-            <Skeleton className='max-w-4xl h-[500px] ' />
+         <div className='h-[calc(100vh-4.5rem)] flex items-center flex-col justify-center gap-4 bg-gray-900'>
+            <Skeleton className='max-w-4xl h-[200px] bg-gray-800' />
+            <Skeleton className='max-w-4xl h-[200px] bg-gray-800' />
+            <Skeleton className='max-w-4xl h-[200px] bg-gray-800' />
+            <Skeleton className='max-w-4xl h-[500px] bg-gray-800' />
          </div>
       );
    }
 
    if (error) {
       return (
-         <div className='min-h-screen bg-gray-50 p-6 flex items-center justify-center'>
+         <div className='min-h-screen bg-gray-900 p-6 flex items-center justify-center'>
             <p className='text-red-500'>
                Error loading data: {`${error.message}`}
             </p>
@@ -64,10 +64,10 @@ export default function UserProfile() {
    };
 
    return (
-      <div className='min-h-screen bg-gray-50 p-6'>
+      <div className='min-h-screen bg-gray-900 p-6'>
          {/* Profile Header */}
          <div className='max-w-4xl mx-auto'>
-            <Card className='mb-6'>
+            <Card className='mb-6 bg-gray-800 border-gray-700'>
                <CardHeader>
                   <div className='flex items-center space-x-4'>
                      <Avatar>
@@ -75,31 +75,37 @@ export default function UserProfile() {
                            src='https://github.com/shadcn.png'
                            alt={profile.name}
                         />
-                        <AvatarFallback>{profile.name[0]}</AvatarFallback>
+                        <AvatarFallback className='bg-gray-700 text-white'>
+                           {profile.name[0]}
+                        </AvatarFallback>
                      </Avatar>
                      <div>
-                        <CardTitle className='text-2xl'>
+                        <CardTitle className='text-2xl text-white'>
                            {profile.name}
                         </CardTitle>
-                        <CardDescription>{profile.email}</CardDescription>
+                        <CardDescription className='text-gray-400'>
+                           {profile.email}
+                        </CardDescription>
                      </div>
                   </div>
                </CardHeader>
                <CardContent>
                   <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                      <div>
-                        <p className='text-sm text-gray-500'>Contact</p>
-                        <p className='font-medium'>{profile.contact}</p>
+                        <p className='text-sm text-gray-400'>Contact</p>
+                        <p className='font-medium text-white'>
+                           {profile.contact}
+                        </p>
                      </div>
                      <div>
-                        <p className='text-sm text-gray-500'>Joined</p>
-                        <p className='font-medium'>
+                        <p className='text-sm text-gray-400'>Joined</p>
+                        <p className='font-medium text-white'>
                            {new Date(profile.createdAt).toLocaleDateString()}
                         </p>
                      </div>
                      <div>
-                        <p className='text-sm text-gray-500'>Total Videos</p>
-                        <p className='font-medium'>{totalVideos}</p>
+                        <p className='text-sm text-gray-400'>Total Videos</p>
+                        <p className='font-medium text-white'>{totalVideos}</p>
                      </div>
                   </div>
                </CardContent>
@@ -107,22 +113,27 @@ export default function UserProfile() {
 
             {/* Most Popular Video Section */}
             {mostPopularVideo && (
-               <Card className='mb-6'>
+               <Card className='mb-6 bg-gray-800 border-gray-700'>
                   <CardHeader>
-                     <CardTitle>Most Popular Video 🔥</CardTitle>
+                     <CardTitle className='text-white'>
+                        Most Popular Video 🔥
+                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                      <div className='flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6'>
                         <img
-                           src={mostPopularVideo.thumbnail}
+                           src={mostPopularVideo.thumbnail.replace(
+                              'http://localhost:9000',
+                              'https://devsskills.com/files'
+                           )}
                            alt={mostPopularVideo.title}
                            className='w-full md:w-48 h-32 object-cover rounded-lg'
                         />
                         <div className='flex-1'>
-                           <p className='font-medium'>
+                           <p className='font-medium text-white'>
                               {mostPopularVideo.title}
                            </p>
-                           <p className='text-sm text-gray-500'>
+                           <p className='text-sm text-gray-400'>
                               Views: {mostPopularVideo.viewCount} | Likes:{' '}
                               {mostPopularVideo.likeCount}
                            </p>
@@ -133,7 +144,7 @@ export default function UserProfile() {
                                     mostPopularVideo.title
                                  )
                               }
-                              className='text-sm text-blue-500 hover:underline mt-2 inline-block'
+                              className='text-sm text-blue-400 hover:underline mt-2 inline-block'
                            >
                               Watch Video
                            </button>
@@ -144,31 +155,35 @@ export default function UserProfile() {
             )}
 
             {/* Statistics Section */}
-            <Card className='mb-6'>
+            <Card className='mb-6 bg-gray-800 border-gray-700'>
                <CardHeader>
-                  <CardTitle>Video Statistics 🧮</CardTitle>
+                  <CardTitle className='text-white'>
+                     Video Statistics 🧮
+                  </CardTitle>
                </CardHeader>
                <CardContent>
                   <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                      <div>
-                        <p className='text-sm text-gray-500'>Total Views</p>
-                        <p className='font-medium'>{totalViews}</p>
+                        <p className='text-sm text-gray-400'>Total Views</p>
+                        <p className='font-medium text-white'>{totalViews}</p>
                      </div>
                      <div>
-                        <p className='text-sm text-gray-500'>Total Likes</p>
-                        <p className='font-medium'>{totalLikes}</p>
+                        <p className='text-sm text-gray-400'>Total Likes</p>
+                        <p className='font-medium text-white'>{totalLikes}</p>
                      </div>
                      <div>
-                        <p className='text-sm text-gray-500'>Engagement Rate</p>
-                        <p className='font-medium'>{engagementRate}</p>
+                        <p className='text-sm text-gray-400'>Engagement Rate</p>
+                        <p className='font-medium text-white'>
+                           {engagementRate}
+                        </p>
                      </div>
                   </div>
                   <div className='mt-6'>
-                     <p className='text-sm text-gray-500'>
-                        Average Views per Video
-                     </p>
-                     <Progress value={averageViews * 100} className='h-2' />
-                     <p className='text-sm text-gray-500 mt-2'>
+                     <Progress
+                        value={engagementRate.replace('%', '')}
+                        className='h-2'
+                     />
+                     <p className='text-sm text-gray-400 mt-2'>
                         {averageViews.toFixed(2)} views/video
                      </p>
                   </div>
@@ -176,20 +191,24 @@ export default function UserProfile() {
             </Card>
 
             {/* Engagement Breakdown */}
-            <Card>
+            <Card className='bg-gray-800 border-gray-700'>
                <CardHeader>
-                  <CardTitle>Engagement Breakdown</CardTitle>
+                  <CardTitle className='text-white'>
+                     Engagement Breakdown
+                  </CardTitle>
                </CardHeader>
                <CardContent>
                   <div className='space-y-4'>
                      {engagementBreakdown.map((video: any) => (
                         <div
                            key={video.id}
-                           className='flex items-center justify-between p-4 border rounded-lg'
+                           className='flex items-center justify-between p-4 border rounded-lg bg-gray-700 border-gray-600'
                         >
                            <div>
-                              <p className='font-medium'>{video.title}</p>
-                              <p className='text-sm text-gray-500'>
+                              <p className='font-medium text-white'>
+                                 {video.title}
+                              </p>
+                              <p className='text-sm text-gray-400'>
                                  Views: {video.viewCount} | Likes:{' '}
                                  {video.likeCount}
                               </p>
@@ -198,7 +217,7 @@ export default function UserProfile() {
                               onClick={() =>
                                  handleWatchVideo(video.videoUrl, video.title)
                               }
-                              className='text-sm text-blue-500 hover:underline'
+                              className='text-sm text-blue-400 hover:underline'
                            >
                               Watch Video
                            </button>
@@ -215,10 +234,13 @@ export default function UserProfile() {
             onClose={() => setIsModalOpen(false)}
             title={selectedVideo?.title || 'Video Player'}
          >
-            <div className='w-full h-full flex justify-center items-center'>
+            <div className='w-full h-full flex justify-center items-center bg-gray-900'>
                {selectedVideo && (
                   <ReactPlayer
-                     url={selectedVideo.url}
+                     url={selectedVideo.url.replace(
+                        'http://localhost:9000',
+                        'https://devsskills.com/files'
+                     )}
                      controls={true}
                      playing={true}
                      width='100%'
