@@ -39,6 +39,7 @@ const Routers = () => {
                   </ProtectedRoute>
                }
             />
+            <Route path='/profile/:userId' element={<UserProfile />} />
          </Route>
          <Route path='*' element={<NotFound />} />
       </Routes>
