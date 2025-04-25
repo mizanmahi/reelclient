@@ -47,6 +47,8 @@ const Login: React.FC = () => {
 
    const { setUser } = useUser();
 
+   const [loginError, setLoginError] = React.useState<string | null>(null);
+
    async function onSubmit(values: z.infer<typeof loginSchema>) {
       try {
          const res = await login(values);
@@ -55,12 +57,16 @@ const Login: React.FC = () => {
             const userData = jwtDecode(res.data.token);
             setUser(userData as IUser);
 
+            setLoginError(null);
+
             navigate(location.state?.from?.pathname || '/profile', {
                replace: true,
             });
          }
       } catch (err: any) {
-         console.error(err);
+         console.error(err.message);
+         setLoginError(err?.message || 'Login failed');
+         toast.error(err?.message || 'Login failed');
       }
    }
 
@@ -133,6 +139,13 @@ const Login: React.FC = () => {
                   />
 
                   {/* Submit Button */}
+
+                  {/* design a no user found text */}
+                  {loginError && (
+                     <p className='text-red-500 text-sm text-center'>
+                        {loginError}
+                     </p>
+                  )}
 
                   <Button
                      type='submit'
