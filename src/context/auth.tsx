@@ -4,6 +4,12 @@ type AuthContextType = {
    user: any;
    signin: () => Promise<void>;
    signout: () => Promise<void>;
-} | null;
+};
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const defaultAuthContext: AuthContextType = {
+   user: null,
+   signin: async () => {},
+   signout: async () => {},
+};
+
+export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
