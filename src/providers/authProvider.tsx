@@ -1,57 +1,65 @@
-import { AuthContext } from '@/context/auth';
-import userManager from '@/lib/authservice';
-import { useEffect, useState } from 'react';
+// src/auth/AuthProvider.tsx
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { User } from 'oidc-client-ts';
+import { userManager } from '@/config/authConfig';
+
+interface AuthContextType {
+   user: User | null;
+   isLoading: boolean;
+   login: () => Promise<void>;
+   logout: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType>(null!);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-   const [user, setUser] = useState<any>(null);
+   const [user, setUser] = useState<User | null>(null);
+   const [isLoading, setIsLoading] = useState(true);
 
    useEffect(() => {
-      userManager.getUser().then((user) => {
-         if (user && !user.expired) {
+      const loadUser = async () => {
+         try {
+            const user = await userManager.getUser();
             setUser(user);
+         } catch (error) {
+            console.error('Error loading user:', error);
          }
-      });
+         setIsLoading(false);
+      };
 
-      // 🔥 After successful silent renew
-      userManager.events.addAccessTokenExpiring(() => {
-         console.log('Access token is expiring soon, starting silent renew...');
-      });
+      loadUser();
 
-      userManager.events.addAccessTokenExpired(() => {
-         console.warn('Access token expired!');
-         userManager.signinSilent().then((user) => {
-            console.log('Silent renew success! New user:', user);
-            setUser(user);
-         });
-      });
-
-      userManager.events.addUserLoaded((user) => {
-         console.log('New user loaded after silent renew:', user);
-      });
-
-      userManager.events.addUserLoaded((user) => setUser(user));
-      userManager.events.addUserUnloaded(() => setUser(null));
+      // Add event listeners
+      userManager.events.addUserLoaded(handleUserLoaded);
+      userManager.events.addUserUnloaded(handleUserUnloaded);
 
       return () => {
-         userManager.events.removeUserLoaded((user) => setUser(user));
-         userManager.events.removeUserUnloaded(() => setUser(null));
-         userManager.events.removeAccessTokenExpiring(console.log);
-         userManager.events.removeAccessTokenExpired(console.warn);
-         userManager.events.removeUserLoaded(console.log);
+         userManager.events.removeUserLoaded(handleUserLoaded);
+         userManager.events.removeUserUnloaded(handleUserUnloaded);
       };
    }, []);
 
+   const handleUserLoaded = (user: User) => {
+      setUser(user);
+   };
+
+   const handleUserUnloaded = () => {
+      setUser(null);
+   };
+
+   const login = async () => {
+      await userManager.signinRedirect();
+   };
+
+   const logout = async () => {
+      await userManager.signoutRedirect();
+   };
+
    return (
-      <AuthContext.Provider
-         value={{
-            user,
-            signin: () => userManager.signinRedirect(),
-            signout: () => userManager.signoutRedirect(),
-         }}
-      >
+      <AuthContext.Provider value={{ user, isLoading, login, logout }}>
          {children}
       </AuthContext.Provider>
    );
 };
 
-export default AuthProvider;
+export const useAuth = () => useContext(AuthContext);

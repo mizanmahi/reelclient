@@ -1,20 +1,29 @@
-import { useAuth } from '@/providers/useAuth';
+import { useAuth } from '@/providers/authProvider';
 
 function Menubar() {
-   const { user, signin, signout } = useAuth();
-   console.log('user', user?.access_token);
+   const { user, isLoading, login, logout } = useAuth();
+
+   if (isLoading) return <div>Loading...</div>;
 
    return (
       <div>
          {user ? (
             <>
-               <h2>Hello {user.profile.name}</h2>
-               <button onClick={signout}>Logout</button>
+               <h1>Welcome {user.profile.name}</h1>
+               <p>Email: {user.profile.email}</p>
+               <button onClick={logout}>Logout</button>
+
+               {/* Access tokens */}
+               <div style={{ marginTop: '20px' }}>
+                  <h3>Access Token:</h3>
+                  <p style={{ wordBreak: 'break-all' }}>{user.access_token}</p>
+
+                  <h3>ID Token:</h3>
+                  <p style={{ wordBreak: 'break-all' }}>{user.id_token}</p>
+               </div>
             </>
          ) : (
-            <button className='text-2xl text-white p-2' onClick={signin}>
-               Login
-            </button>
+            <button onClick={login}>Login</button>
          )}
       </div>
    );

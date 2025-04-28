@@ -1,34 +1,27 @@
-import userManager from '@/lib/authservice';
+import { userManager } from '@/config/authConfig';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
-const SilentRenewPage = () => {
+const SilentRenew = () => {
+   const navigate = useNavigate();
+
    useEffect(() => {
-      const renew = async () => {
+      const handleSilentRenew = async () => {
          try {
-            // Silent renew theke user update kora
-            const user = await userManager.signinSilentCallback();
-            console.log('Silent renew success', user);
-
-            // Updated user pawa
-            const updatedUser = await userManager.getUser();
-            console.log('Updated user:', updatedUser);
-
-            // Check if new tokens are available
-            console.log('New access token:', updatedUser?.access_token);
-         } catch (err) {
-            console.error('Silent renew error:', err);
+            console.log('Silent renew started');
+            await userManager.signinSilentCallback();
+         } catch (error) {
+            console.error('Error during silent renew:', error);
+            await userManager.removeUser(); // Clear invalid session
+         } finally {
+            navigate('/');
          }
       };
 
-      renew();
+      handleSilentRenew();
+   }, [navigate]);
 
-      // Optional: make sure this continues to run after every interval
-      const interval = setInterval(renew, 5 * 60 * 1000); // Every 5 minutes
-
-      return () => clearInterval(interval);
-   }, []);
-
-   return <div>Loading...</div>;
+   return <div>Renewing session...</div>;
 };
 
-export default SilentRenewPage;
+export default SilentRenew;

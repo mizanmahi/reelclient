@@ -1,19 +1,25 @@
-import userManager from '@/lib/authservice';
+import { userManager } from '@/config/authConfig';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-const CallbackPage = () => {
+const Callback = () => {
    const navigate = useNavigate();
 
    useEffect(() => {
-      console.log('CallbackPage useEffect triggered');
-      userManager.signinRedirectCallback().then((user) => {
-         console.log('Signin redirect callback success', user);
-         navigate('/');
-      });
+      const handleCallback = async () => {
+         try {
+            await userManager.signinRedirectCallback();
+            navigate('/');
+         } catch (error) {
+            console.error('Error handling callback:', error);
+            navigate('/login');
+         }
+      };
+
+      handleCallback();
    }, [navigate]);
 
-   return <div>Signing in...</div>;
+   return <div>Loading...</div>;
 };
 
-export default CallbackPage;
+export default Callback;
