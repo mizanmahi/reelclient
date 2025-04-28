@@ -2,6 +2,7 @@ import { useAuth } from '@/providers/useAuth';
 
 function Menubar() {
    const { user, signin, signout } = useAuth();
+   console.log('user', user?.access_token);
 
    return (
       <div>

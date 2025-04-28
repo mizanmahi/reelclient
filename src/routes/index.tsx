@@ -9,6 +9,8 @@ import ProtectedRoute from '@/components/Shared/ProtectedRoute';
 import { useUser } from '@/hooks/useUser';
 import NotFound from '@/pages/notFound/NotFound';
 import ComingSoon from '@/pages/comingSoon/ComingSoon';
+import CallbackPage from '@/pages/OidcCallback/OidcCallback';
+import SilentRenewPage from '@/pages/SilentRenew/SilentRenew';
 
 const Routers = () => {
    const { user } = useUser();
@@ -18,6 +20,8 @@ const Routers = () => {
       <Routes>
          <Route path='/' element={<App />}>
             <Route index element={<Home />} />
+            <Route path='/auth/callback' element={<CallbackPage />} />
+            <Route path='/silent-renew' element={<SilentRenewPage />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/services' element={<ComingSoon />} />
