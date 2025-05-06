@@ -41,6 +41,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
    const handleUserLoaded = (user: User) => {
       setUser(user);
+      // here you can add some post login logic, like storing user info in localStorage
+      // localStorage.setItem('user', JSON.stringify(user));
    };
 
    const handleUserUnloaded = () => {

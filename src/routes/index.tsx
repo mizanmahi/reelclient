@@ -12,6 +12,8 @@ import ComingSoon from '@/pages/comingSoon/ComingSoon';
 import CallbackPage from '@/pages/OidcCallback/OidcCallback';
 import SilentRenewPage from '@/pages/SilentRenew/SilentRenew';
 import { useAuth } from '@/providers/authProvider';
+import Home from '@/pages/home/Home';
+import ExamplePage from '@/pages/examplePage/ExamplePage';
 
 const Routers = () => {
    const { user } = useAuth();
@@ -20,7 +22,8 @@ const Routers = () => {
    return (
       <Routes>
          <Route path='/' element={<App />}>
-            {/* <Route index element={<Home />} /> */}
+            <Route index element={<Home />} />
+            <Route path='/example' element={<ExamplePage />} />
             <Route path='/callback' element={<CallbackPage />} />
             <Route path='/silent-renew' element={<SilentRenewPage />} />
             <Route path='/login' element={<Login />} />

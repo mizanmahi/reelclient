@@ -23,7 +23,7 @@ const oidcConfig: UserManagerSettings = {
    client_id: '46f2b608',
    redirect_uri: 'http://localhost:4000/callback',
    post_logout_redirect_uri: 'http://localhost:4000',
-   response_type: 'code', // Use Authorization Code Flow with PKCE
+   response_type: 'code',
    scope: 'openid profile email',
    silent_redirect_uri: 'http://localhost:4000/silent-renew',
    automaticSilentRenew: true,
@@ -32,7 +32,7 @@ const oidcConfig: UserManagerSettings = {
 
 export const userManager = new UserManager(oidcConfig);
 
-// Helper function to get user info
+// Helper function to get user info, this is optional, you can directly use the userManager.getUser() also
 export const getUser = async (): Promise<User | null> => {
    try {
       return await userManager.getUser();
